@@ -83,9 +83,9 @@ Instances of this class will be able to attach to a ReactiveSentence instance, d
 ```typescript
 const targetSVGElement = document.getElementById("svgWrapper")
 
-const sentenceSVGOptions = dependencytreejs.defaultSentenceSVGOptions()
+const sentenceSVGOptions = wydependencytreejsiwys.defaultSentenceSVGOptions()
 
-const sentenceSVG = new dependencytreejs.SentenceSVG(
+const sentenceSVG = new wydependencytreejsiwys.SentenceSVG(
   targetSVGElement,
   reactiveSentence,
   sentenceSVGOptions
@@ -156,7 +156,7 @@ this.sentenceCaretaker.redo(); // travel forward of one snapshot
 This function allow you to set the 'LIGHT' and 'DARK' themes
 
 ```typescript
-import {setThemeMode} from "dependencytreejs/lib";
+import {setThemeMode} from "wydependencytreejsiwys/lib";
 
 setThemeMode("DARK")
 // or
@@ -167,7 +167,7 @@ setThemeMode("LIGHT")
 This function allow you to set a custom theme, provided as a string (CSS syntax)
 
 ```typescript
-import { setStyleSheet } from "dependencytreejs/lib";
+import { setStyleSheet } from "wydependencytreejsiwys/lib";
 
 const myCustomCSS = `
 .FORM {
@@ -182,7 +182,7 @@ const myCustomCSS = `
 `
 setStyleSheet(myCustomCSS) 
 ```
-Be careful, the setThemeMode() will delete all the CSS rules for dependencytreejs and set only the new one you specified.
+Be careful, the setThemeMode() will delete all the CSS rules for wydependencytreejsiwys and set only the new one you specified.
 It will not extend the rules.
 
 ## For developers
@@ -208,7 +208,7 @@ npm publish
 ### 2.4.1
 - add: compatibility with empty nodes (enhanced conll specifications)
 ### 2.4.0
-- update: to conllup-js 3.1.0 (non breaking changes for DependencyTreeJS)
+- update: to conllup-js 3.1.0 (non breaking changes for wyDependencyTreeJSiwys)
 ### 2.3.1
 - fix: add exportable exportPNG and exportSVG in index.ts
 ### 2.3.0

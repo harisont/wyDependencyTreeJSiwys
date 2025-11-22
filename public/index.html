@@ -25,21 +25,21 @@
     let current_theme = 'DARK'
 
     /**
-     * Wrapper of the dependencytreejs.setThemeMode() function that add background color switching for better vizualization
+     * Wrapper of the wydependencytreejsiwys.setThemeMode() function that add background color switching for better vizualization
      * @param theme
      */
     function setThemeModeWrapper(theme) {
-        console.log(`Setting ${theme} mode for dependencytreejs`)
+        console.log(`Setting ${theme} mode for wydependencytreejsiwys`)
        if (theme === 'DARK') {
            bodyHMLTelement.style.backgroundColor = '#1d1d1d';
-           // dependencytreejs.setStyleSheet(darkStylesheet, true);
+           // wydependencytreejsiwys.setStyleSheet(darkStylesheet, true);
 
        } else {
            bodyHMLTelement.style.backgroundColor = 'white';
-           // dependencytreejs.setStyleSheet(lightStylesheet, true);
+           // wydependencytreejsiwys.setStyleSheet(lightStylesheet, true);
 
        }
-       dependencytreejs.setThemeMode(current_theme, true);
+       wydependencytreejsiwys.setThemeMode(current_theme, true);
     }
 
     function switchThemeMode() {
@@ -59,25 +59,25 @@
 
     setThemeModeWrapper(current_theme)
 
-    // You have access to dependencytreejs module
+    // You have access to wydependencytreejsiwys module
     const conll = "# text = I am eating a pineapple\n" +
         "1\tI\tI\tPRON\t_\t_\t2\tsuj\t_\t_\n" +
         "2\tam\tam\tAUX\t_\t_\t0\troot\t_\tGloss=être\n" +
         "3\teating\teat\tVERB\t_\t_\t2\taux\t_\thighlight=red\n" +
         "4\ta\t_\tDET\ta\t_\t5\tdet\t_\t_\n" +
         "5\tpineapple\tpineapple\tNOUN\t_\t_\t3\tobj\t_\t_"
-    const reactiveSentence = new dependencytreejs.ReactiveSentence();
+    const reactiveSentence = new wydependencytreejsiwys.ReactiveSentence();
     reactiveSentence.fromSentenceConll(conll);
 
     const targetSVGElement = document.getElementById("svgWrapper")
 
-    const sentenceSVGOptions = dependencytreejs.defaultSentenceSVGOptions()
+    const sentenceSVGOptions = wydependencytreejsiwys.defaultSentenceSVGOptions()
     sentenceSVGOptions.interactive = true
     sentenceSVGOptions.tokenSpacing = 20
     sentenceSVGOptions.arcHeight = 40
     sentenceSVGOptions.featuresHorizontalSpacing = 18
 
-    const sentenceSVG = new dependencytreejs.SentenceSVG(
+    const sentenceSVG = new wydependencytreejsiwys.SentenceSVG(
       targetSVGElement,
       reactiveSentence,
       sentenceSVGOptions
@@ -91,7 +91,7 @@
         "3\teating\t_\tVERB\t_\t_\t2\taux\t_\thighlight=red\n" +
         "4\ta\t_\tADV\t_\t_\t5\tdet\t_\t_\n" +
         "5\tpineapple\t_\tNOUN\t_\t_\t3\tobj\t_\t_"
-    const reactiveSentenceDiff = new dependencytreejs.ReactiveSentence();
+    const reactiveSentenceDiff = new wydependencytreejsiwys.ReactiveSentence();
     reactiveSentenceDiff.fromSentenceConll(conllDiff);
 
     sentenceSVG.plugDiffTree(reactiveSentenceDiff)

@@ -5,7 +5,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'lib'),
     filename: 'index.js',
-    library: 'dependencytreejs',
+    library: 'wydependencytreejsiwys',
     libraryTarget: 'umd',
     libraryExport: 'default',
   },

@@ -162,13 +162,13 @@ function createStyleElement(id: string, content: string) {
 }
 
 /**
- * Appends CSS content to the head of the site for dependencytreejs
+ * Appends CSS content to the head of the site for wydependencytreejsiwys
  * @param stylesheet css stylesheet rules string with normal css syntax
- * @param force set to `true` you want to overwrite current dependencytreejs stylesheet
+ * @param force set to `true` you want to overwrite current wydependencytreejsiwys stylesheet
  */
 export function setStyleSheet(stylesheet: string, force: boolean): void {
-  const id = 'dependencytreejs-stylesheet';
-  // remove current dependencytreejs style sheet if exist
+  const id = 'wydependencytreejsiwys-stylesheet';
+  // remove current wydependencytreejsiwys style sheet if exist
   const dependencytreeStylesheet = document.getElementById(id);
   if (dependencytreeStylesheet !== null && dependencytreeStylesheet.parentElement !== null && force) {
     dependencytreeStylesheet.parentElement.removeChild(dependencytreeStylesheet);
@@ -180,10 +180,10 @@ export function setStyleSheet(stylesheet: string, force: boolean): void {
 /**
  * Switch the theme mode of the trees
  * @param theme "LIGHT" or "DARK"
- * @param force set to `true` you want to overwrite current dependencytreejs stylesheet
+ * @param force set to `true` you want to overwrite current wydependencytreejsiwys stylesheet
  */
 export function setThemeMode(theme: 'LIGHT' | 'DARK', force: boolean) {
-  console.log(`Setting ${theme} mode for dependencytreejs`);
+  console.log(`Setting ${theme} mode for wydependencytreejsiwys`);
   if (theme === 'DARK') {
     setStyleSheet(darkStylesheet, force);
   } else {

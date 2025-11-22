@@ -3,7 +3,7 @@ import { SentenceSVG, defaultSentenceSVGOptions } from './SentenceSVG';
 import { setThemeMode, setStyleSheet, lightStylesheet } from './StylesheetHandler';
 import { exportPNG, exportSVG } from './exportHandler';
 
-// On DependencyTreeJS loading, we initialize the theme for the trees.
+// On wyDependencyTreeJSiwys loading, we initialize the theme for the trees.
 // This can be overwritten at will by using setThemeMode or setStyleSheet with force=true
 setThemeMode('LIGHT', false);
 
