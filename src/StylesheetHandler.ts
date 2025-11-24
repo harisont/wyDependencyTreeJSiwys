@@ -62,7 +62,7 @@ const sharedStyleSheet = `
 export const lightStylesheet =
   sharedStyleSheet +
   `
-    .FORM, .LEMMA {
+    .FORM, .LEMMA, .ADD, .REMOVE {
       fill: black;
     }
 
@@ -107,7 +107,7 @@ export const lightStylesheet =
 export const darkStylesheet =
   sharedStyleSheet +
   `
-      .FORM, .LEMMA {
+      .FORM, .LEMMA, .ADD, .REMOVE {
       fill: #e6e2e2;
     }
 
