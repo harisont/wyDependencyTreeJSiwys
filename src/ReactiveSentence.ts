@@ -164,7 +164,7 @@ export class ReactiveSentence implements IOriginator, ISubject {
       idLastToken = (parseInt(tokenJson.ID, 10) + 1).toString();
     }
     newToken.ID = idLastToken;
-    newToken.FORM = 'new_token';
+    newToken.FORM = '_';
     this.state.treeJson.nodesJson[newToken.ID] = newToken;
     this.state.treeJson = JSON.parse(JSON.stringify(this.state.treeJson));
     this.notify();
