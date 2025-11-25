@@ -61,6 +61,7 @@ export declare class ReactiveSentence implements IOriginator, ISubject {
     updateToken(tokenJson: tokenJson_T): void;
     updateTree(treeJson: treeJson_T): void;
     updateSentence(sentenceJson: sentenceJson_T): void;
+    removeToken(tokenID: string): void;
     addEmptyToken(): void;
     exportConll(): string;
     getSentenceText(): string;

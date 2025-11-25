@@ -4,6 +4,7 @@ import {
   sentenceJsonToConll,
   emptyTokenJson,
   constructTextFromTreeJson,
+  replaceArrayOfTokens,
 } from 'conllup/lib/conll';
 import { sentenceJson_T, treeJson_T, tokenJson_T, featuresJson_T, metaJson_T } from 'conllup/lib/conll';
 
@@ -155,6 +156,11 @@ export class ReactiveSentence implements IOriginator, ISubject {
   public updateSentence(sentenceJson: sentenceJson_T): void {
     this.state = JSON.parse(JSON.stringify(sentenceJson));
     this.notify();
+  }
+
+  public removeToken(tokenID: string): void {
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10) + 1], [])
+    this.updateTree(newTree)
   }
 
   public addEmptyToken(): void {
