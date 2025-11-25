@@ -159,7 +159,7 @@ export class ReactiveSentence implements IOriginator, ISubject {
   }
 
   public removeToken(tokenID: string): void {
-    const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10) + 1], [])
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10)], [])
     this.updateTree(newTree)
   }
 
