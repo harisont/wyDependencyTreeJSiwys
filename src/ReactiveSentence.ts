@@ -176,7 +176,7 @@ export class ReactiveSentence implements IOriginator, ISubject {
     newTree.nodesJson[newTokenID].UPOS = "_";
     newTree.nodesJson[newTokenID].XPOS = "_";
     newTree.nodesJson[newTokenID].FEATS = {};
-    newTree.nodesJson[newTokenID].HEAD = 0;
+    newTree.nodesJson[newTokenID].HEAD = -1;
     newTree.nodesJson[newTokenID].DEPREL = "_";
     newTree.nodesJson[newTokenID].DEPS = {};
     newTree.nodesJson[newTokenID].MISC = {};
