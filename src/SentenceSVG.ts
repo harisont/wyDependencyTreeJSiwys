@@ -567,9 +567,15 @@ class TokenSVG {
         snapRemoveButton.addClass("REMOVE");
         this.snapElements["REMOVE"] = snapRemoveButton;
 
-        const snapAddButton = snapSentence.text(this.startX, runningY, "+");
-        snapAddButton.addClass("ADD");
-        this.snapElements["ADD"] = snapAddButton;
+        const snapAddAfterButton = snapSentence.text(this.startX, runningY, "+");
+        snapAddAfterButton.addClass("ADD_AFTER");
+        this.snapElements["ADD_AFTER"] = snapAddAfterButton;
+
+        if (this.tokenJson["ID"] == "1") {
+          const snapAddBeforeButton = snapSentence.text(this.startX, runningY, "+");
+          snapAddBeforeButton.addClass("ADD_BEFORE");
+          this.snapElements["ADD_BEFORE"] = snapAddBeforeButton;
+        }
       }
 
       // increment position except if feature is a FEATS or MISC which is not present for the token
@@ -592,9 +598,10 @@ class TokenSVG {
       const featureX = this.centerX - featureWidth / 2;
       snapFeature.attr({ x: featureX });
       if (feature == "FORM") { // then also center token opts buttons
-        const buttonX = featureX + featureWidth;
-        this.snapElements["ADD"].attr({ x: buttonX });
-        this.snapElements["REMOVE"].attr({ x: buttonX });
+        const afterButtonX = featureX + featureWidth;
+        const beforeButtonX = featureX - featureWidth;
+        this.snapElements["ADD_AFTER"].attr({ x: afterButtonX });
+        this.snapElements["REMOVE"].attr({ x: afterButtonX });
       }
     }
   }

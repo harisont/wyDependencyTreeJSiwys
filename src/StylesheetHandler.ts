@@ -2,13 +2,10 @@ const sharedStyleSheet = `
   .interactive > .FORM,
   .interactive > .LEMMA,
   .interactive > .UPOS,
+  .interactive > .ADD_AFTER,
+  .interactive > .ADD_BEFORE,
+  .interactive > .REMOVE,
   .interactive > .DEPREL {
-    cursor: pointer;
-  }
-  .interactive > .ADD {
-    cursor: pointer;
-  }
-  .interactive > .REMOVE {
     cursor: pointer;
   }
   
@@ -68,7 +65,7 @@ const sharedStyleSheet = `
 export const lightStylesheet =
   sharedStyleSheet +
   `
-    .FORM, .LEMMA, .ADD, .REMOVE {
+    .FORM, .LEMMA, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
       fill: black;
     }
 
@@ -113,7 +110,7 @@ export const lightStylesheet =
 export const darkStylesheet =
   sharedStyleSheet +
   `
-      .FORM, .LEMMA, .ADD, .REMOVE {
+      .FORM, .LEMMA, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
       fill: #e6e2e2;
     }
 

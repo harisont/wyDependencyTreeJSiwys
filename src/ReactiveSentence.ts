@@ -163,6 +163,29 @@ export class ReactiveSentence implements IOriginator, ISubject {
     this.updateTree(newTree);
   }
 
+  public addEmptyTokenBefore(tokenID: string): void {
+    const succToken = this.state.treeJson.nodesJson[tokenID]
+    const tokenIntD = parseInt(tokenID, 10)
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [tokenIntD], ["_", this.state.treeJson.nodesJson[tokenID].FORM], true);
+    const newTokenID = (tokenIntD - 1).toString()
+    const oldTokenID = (tokenIntD + 1).toString()
+
+    // TODO: something like
+    // rollback succ token and reset most fields of the new one
+    // (this is necessary because "adding" is designed for token splitting)
+    //newTree.nodesJson[oldTokenID] = succToken;
+    //newTree.nodesJson[newTokenID].LEMMA = "_";
+    //newTree.nodesJson[newTokenID].UPOS = "_";
+    //newTree.nodesJson[newTokenID].XPOS = "_";
+    //newTree.nodesJson[newTokenID].FEATS = {};
+    //newTree.nodesJson[newTokenID].HEAD = -1;
+    //newTree.nodesJson[newTokenID].DEPREL = "_";
+    //newTree.nodesJson[newTokenID].DEPS = {};
+    //newTree.nodesJson[newTokenID].MISC = {};
+
+    this.updateTree(newTree);
+  }
+
   public addEmptyTokenAfter(tokenID: string): void {
     const prevToken = this.state.treeJson.nodesJson[tokenID]
     const tokenIntD = parseInt(tokenID, 10)
