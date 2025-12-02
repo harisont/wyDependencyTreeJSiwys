@@ -159,8 +159,29 @@ export class ReactiveSentence implements IOriginator, ISubject {
   }
 
   public removeToken(tokenID: string): void {
-    const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10)], [])
-    this.updateTree(newTree)
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10)], []);
+    this.updateTree(newTree);
+  }
+
+  public addEmptyTokenAfter(tokenID: string): void {
+    const prevToken = this.state.treeJson.nodesJson[tokenID]
+    const tokenIntD = parseInt(tokenID, 10)
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [tokenIntD], [this.state.treeJson.nodesJson[tokenID].FORM, "_"], true);
+    const newTokenID = (tokenIntD + 1).toString()
+
+    // rollback prev token and reset most fields of the new one
+    // (this is necessary because "adding" is designed for token splitting)
+    newTree.nodesJson[tokenID] = prevToken;
+    newTree.nodesJson[newTokenID].LEMMA = "_";
+    newTree.nodesJson[newTokenID].UPOS = "_";
+    newTree.nodesJson[newTokenID].XPOS = "_";
+    newTree.nodesJson[newTokenID].FEATS = {};
+    newTree.nodesJson[newTokenID].HEAD = 0;
+    newTree.nodesJson[newTokenID].DEPREL = "_";
+    newTree.nodesJson[newTokenID].DEPS = {};
+    newTree.nodesJson[newTokenID].MISC = {};
+
+    this.updateTree(newTree);
   }
 
   public addEmptyToken(): void {
