@@ -5,6 +5,12 @@ const sharedStyleSheet = `
   .interactive > .DEPREL {
     cursor: pointer;
   }
+  .interactive > .ADD {
+    cursor: pointer;
+  }
+  .interactive > .REMOVE {
+    cursor: pointer;
+  }
   
   .FORM {
     font-size: 16px;
