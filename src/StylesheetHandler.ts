@@ -2,6 +2,9 @@ const sharedStyleSheet = `
   .interactive > .FORM,
   .interactive > .LEMMA,
   .interactive > .UPOS,
+  .interactive > .ADD_AFTER,
+  .interactive > .ADD_BEFORE,
+  .interactive > .REMOVE,
   .interactive > .DEPREL {
     cursor: pointer;
   }
@@ -31,10 +34,14 @@ const sharedStyleSheet = `
     z-index: 99;
   }
   
-  .FEATS, .MISC {
-    font-size: 10px;
+  .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+    font-size: 11px;
   }
-  
+    
+  .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+    font-weight: 999;
+  } 
+
   .glossy {
     font-style: italic;
   }
@@ -62,20 +69,15 @@ const sharedStyleSheet = `
 export const lightStylesheet =
   sharedStyleSheet +
   `
-    .FORM, .LEMMA {
+    .FORM, .LEMMA, .UPOS, .DEPREL, .DEPRELenhanced, .FEATS, .MISC, .XPOS {
       fill: black;
+    } 
+    
+    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+      fill: #F0581A;
     }
 
-    .UPOS, .DEPREL, .DEPRELenhanced {
-      fill: #4a0984;;
-    }
-
-    .FEATS, .MISC, .XPOS {
-      fill: #b352ac;
-    }
-
-    .UPOS.diff,
-    .DEPREL.diff {
+    .UPOS.diff, .DEPREL.diff {
       fill: red;
     }
 
@@ -107,16 +109,12 @@ export const lightStylesheet =
 export const darkStylesheet =
   sharedStyleSheet +
   `
-      .FORM, .LEMMA {
-      fill: #e6e2e2;
-    }
-
-    .UPOS, .DEPREL, .DEPRELenhanced {
-      fill: #ea6ff4;
-    }
-
-    .FEATS, .MISC, .XPOS {
-      fill: #a47da3;
+    .FORM, .LEMMA, .UPOS, .DEPREL, .DEPRELenhanced, .FEATS, .MISC, .XPOS {
+      fill: white;
+    } 
+    
+    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+      fill: #F0581A;
     }
 
     .FORM.diff, .UPOS.diff, .DEPREL.diff {

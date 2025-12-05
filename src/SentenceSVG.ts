@@ -557,7 +557,26 @@ class TokenSVG {
       this.snapElements[feature] = snapFeature;
       // handle width properties
       const featureWidth = snapFeature.getBBox().w;
+      const featureHeight = snapFeature.getBBox().h;
       maxFeatureWidth = Math.max(maxFeatureWidth, featureWidth); // keep biggest node width
+
+      // create add/remove buttons
+      if (feature == "FORM") {
+
+        const snapRemoveButton = snapSentence.text(this.startX, runningY - (featureHeight / 3), "×");
+        snapRemoveButton.addClass("REMOVE");
+        this.snapElements["REMOVE"] = snapRemoveButton;
+
+        const snapAddAfterButton = snapSentence.text(this.startX, runningY, "...");
+        snapAddAfterButton.addClass("ADD_AFTER");
+        this.snapElements["ADD_AFTER"] = snapAddAfterButton;
+
+        if (this.tokenJson["ID"] == "1") {
+          const snapAddBeforeButton = snapSentence.text(this.startX, runningY, "...");
+          snapAddBeforeButton.addClass("ADD_BEFORE");
+          this.snapElements["ADD_BEFORE"] = snapAddBeforeButton;
+        }
+      }
 
       // increment position except if feature is a FEATS or MISC which is not present for the token
       if (!(['MISC', 'FEATS'].includes(feature.split('.')[0]) && featureText === '')) {
@@ -576,7 +595,13 @@ class TokenSVG {
     for (const feature of this.shownFeatures) {
       const snapFeature = this.snapElements[feature];
       const featureWidth = snapFeature.getBBox().w;
-      snapFeature.attr({ x: this.centerX - featureWidth / 2 });
+      const featureX = this.centerX - featureWidth / 2;
+      snapFeature.attr({ x: featureX });
+      if (feature == "FORM") { // then also center token opts buttons
+        const afterButtonX = featureX + featureWidth;
+        this.snapElements["ADD_AFTER"].attr({ x: afterButtonX });
+        this.snapElements["REMOVE"].attr({ x: afterButtonX });
+      }
     }
   }
 

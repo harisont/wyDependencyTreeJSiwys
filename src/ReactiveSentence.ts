@@ -4,6 +4,7 @@ import {
   sentenceJsonToConll,
   emptyTokenJson,
   constructTextFromTreeJson,
+  replaceArrayOfTokens,
 } from 'conllup/lib/conll';
 import { sentenceJson_T, treeJson_T, tokenJson_T, featuresJson_T, metaJson_T } from 'conllup/lib/conll';
 
@@ -157,6 +158,52 @@ export class ReactiveSentence implements IOriginator, ISubject {
     this.notify();
   }
 
+  public removeToken(tokenID: string): void {
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10)], []);
+    this.updateTree(newTree);
+  }
+
+  public addEmptyTokenBefore(tokenID: string): void {
+    const succToken = this.state.treeJson.nodesJson[tokenID];
+    const tokenIntD = parseInt(tokenID, 10);
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [tokenIntD], ["_", this.state.treeJson.nodesJson[tokenID].FORM], true);
+    const oldTokenID = (tokenIntD + 1).toString();
+
+    // rollback lemma of succ token and reset most fields of the new one
+    // (this is necessary because "adding" is designed for token splitting)
+    newTree.nodesJson[oldTokenID].LEMMA = succToken.LEMMA;
+    newTree.nodesJson[tokenID].UPOS = "_";
+    newTree.nodesJson[tokenID].XPOS = "_";
+    newTree.nodesJson[tokenID].FEATS = {};
+    newTree.nodesJson[tokenID].HEAD = -1;
+    newTree.nodesJson[tokenID].DEPREL = "_";
+    newTree.nodesJson[tokenID].DEPS = {};
+    newTree.nodesJson[tokenID].MISC = {};
+
+    this.updateTree(newTree);
+  }
+
+  public addEmptyTokenAfter(tokenID: string): void {
+    const prevToken = this.state.treeJson.nodesJson[tokenID]
+    const tokenIntD = parseInt(tokenID, 10)
+    const newTree = replaceArrayOfTokens(this.state.treeJson, [tokenIntD], [this.state.treeJson.nodesJson[tokenID].FORM, "_"], true);
+    const newTokenID = (tokenIntD + 1).toString()
+
+    // rollback prev token and reset most fields of the new one
+    // (this is necessary because "adding" is designed for token splitting)
+    newTree.nodesJson[tokenID] = prevToken;
+    newTree.nodesJson[newTokenID].LEMMA = "_";
+    newTree.nodesJson[newTokenID].UPOS = "_";
+    newTree.nodesJson[newTokenID].XPOS = "_";
+    newTree.nodesJson[newTokenID].FEATS = {};
+    newTree.nodesJson[newTokenID].HEAD = -1;
+    newTree.nodesJson[newTokenID].DEPREL = "_";
+    newTree.nodesJson[newTokenID].DEPS = {};
+    newTree.nodesJson[newTokenID].MISC = {};
+
+    this.updateTree(newTree);
+  }
+
   public addEmptyToken(): void {
     const newToken = emptyTokenJson();
     let idLastToken = '1';
@@ -164,7 +211,7 @@ export class ReactiveSentence implements IOriginator, ISubject {
       idLastToken = (parseInt(tokenJson.ID, 10) + 1).toString();
     }
     newToken.ID = idLastToken;
-    newToken.FORM = 'new_token';
+    newToken.FORM = '_';
     this.state.treeJson.nodesJson[newToken.ID] = newToken;
     this.state.treeJson = JSON.parse(JSON.stringify(this.state.treeJson));
     this.notify();
