@@ -34,12 +34,12 @@ const sharedStyleSheet = `
     z-index: 99;
   }
   
-  .FEATS, .MISC, .REMOVE {
+  .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
     font-size: 11px;
   }
     
   .ADD_AFTER, .ADD_BEFORE, .REMOVE {
-    font-weight: lighter;
+    font-weight: 999;
   } 
 
   .glossy {
@@ -69,16 +69,12 @@ const sharedStyleSheet = `
 export const lightStylesheet =
   sharedStyleSheet +
   `
-    .FORM, .LEMMA, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+    .FORM, .LEMMA, .UPOS, .DEPREL, .DEPRELenhanced, .FEATS, .MISC, .XPOS {
       fill: black;
-    }
-
-    .UPOS, .DEPREL, .DEPRELenhanced {
-      fill: #4a0984;;
-    }
-
-    .FEATS, .MISC, .XPOS {
-      fill: #b352ac;
+    } 
+    
+    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+      fill: #F0581A;
     }
 
     .UPOS.diff, .DEPREL.diff {
@@ -113,16 +109,12 @@ export const lightStylesheet =
 export const darkStylesheet =
   sharedStyleSheet +
   `
-      .FORM, .LEMMA, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
-      fill: #e6e2e2;
-    }
-
-    .UPOS, .DEPREL, .DEPRELenhanced {
-      fill: #ea6ff4;
-    }
-
-    .FEATS, .MISC, .XPOS {
-      fill: #a47da3;
+    .FORM, .LEMMA, .UPOS, .DEPREL, .DEPRELenhanced, .FEATS, .MISC, .XPOS {
+      fill: white;
+    } 
+    
+    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+      fill: #F0581A;
     }
 
     .FORM.diff, .UPOS.diff, .DEPREL.diff {
