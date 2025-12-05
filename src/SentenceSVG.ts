@@ -599,8 +599,7 @@ class TokenSVG {
       snapFeature.attr({ x: featureX });
       if (feature == "FORM") { // then also center token opts buttons
         const afterButtonX = featureX + featureWidth;
-        const beforeButtonX = featureX - featureWidth;
-        this.snapElements["ADD_AFTER"].attr({ x: afterButtonX });
+        this.snapElements["ADD_AFTER"].attr({ x: afterButtonX + 15 });
         this.snapElements["REMOVE"].attr({ x: afterButtonX });
       }
     }

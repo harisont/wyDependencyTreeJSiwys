@@ -34,10 +34,14 @@ const sharedStyleSheet = `
     z-index: 99;
   }
   
-  .FEATS, .MISC {
-    font-size: 10px;
+  .FEATS, .MISC, .REMOVE {
+    font-size: 11px;
   }
-  
+    
+  .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+    font-weight: lighter;
+  } 
+
   .glossy {
     font-style: italic;
   }
@@ -77,8 +81,7 @@ export const lightStylesheet =
       fill: #b352ac;
     }
 
-    .UPOS.diff,
-    .DEPREL.diff {
+    .UPOS.diff, .DEPREL.diff {
       fill: red;
     }
 
