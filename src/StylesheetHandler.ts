@@ -2,9 +2,7 @@ const sharedStyleSheet = `
   .interactive > .FORM,
   .interactive > .LEMMA,
   .interactive > .UPOS,
-  .interactive > .ADD_AFTER,
-  .interactive > .ADD_BEFORE,
-  .interactive > .REMOVE,
+  .interactive > .WYTIWYS_BUTTON,
   .interactive > .DEPREL {
     cursor: pointer;
   }
@@ -37,8 +35,12 @@ const sharedStyleSheet = `
   .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
     font-size: 11px;
   }
+
+  .WYTIWYS_BUTTON {
+    font-size: 8px;
+  }
     
-  .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+  .WYTIWYS_BUTTON {
     font-weight: 999;
   } 
 
@@ -73,7 +75,7 @@ export const lightStylesheet =
       fill: black;
     } 
     
-    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+    .WYTIWYS_BUTTON { 
       fill: #F0581A;
     }
 
@@ -113,7 +115,7 @@ export const darkStylesheet =
       fill: white;
     } 
     
-    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+    .WYTIWYS_BUTTON {
       fill: #F0581A;
     }
 
