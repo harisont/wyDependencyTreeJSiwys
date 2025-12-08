@@ -560,21 +560,14 @@ class TokenSVG {
       const featureHeight = snapFeature.getBBox().h;
       maxFeatureWidth = Math.max(maxFeatureWidth, featureWidth); // keep biggest node width
 
-      // create add/remove buttons
+      // create WYTIWYS buttons
       if (feature == "FORM") {
 
-        const snapRemoveButton = snapSentence.text(this.startX, runningY - (featureHeight / 3), "×");
-        snapRemoveButton.addClass("REMOVE");
-        this.snapElements["REMOVE"] = snapRemoveButton;
-
-        const snapAddAfterButton = snapSentence.text(this.startX, runningY, "...");
-        snapAddAfterButton.addClass("ADD_AFTER");
-        this.snapElements["ADD_AFTER"] = snapAddAfterButton;
-
+        this.addButton("×", this.startX, runningY - (featureHeight / 3), "REMOVE");
+        this.addButton("...", this.startX, runningY, "ADD_AFTER");
+        
         if (this.tokenJson["ID"] == "1") {
-          const snapAddBeforeButton = snapSentence.text(this.startX, runningY, "...");
-          snapAddBeforeButton.addClass("ADD_BEFORE");
-          this.snapElements["ADD_BEFORE"] = snapAddBeforeButton;
+          this.addButton("...", this.startX, runningY, "ADD_BEFORE");
         }
       }
 
@@ -588,6 +581,13 @@ class TokenSVG {
 
     this.centerFeatures();
   }
+
+  addButton(icon: string, x: number, y: number, className: string): void {
+    const button = this.snapSentence.text(x, y, icon);
+    button.addClass(className);
+    this.snapElements[className] = button;
+  }
+
 
   centerFeatures(): void {
     // center the feature in the column node
