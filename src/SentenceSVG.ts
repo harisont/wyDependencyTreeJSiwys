@@ -567,7 +567,7 @@ class TokenSVG {
         this.addButton("×", this.startX, runningY - (featureHeight / 3), "REMOVE");
         this.addButton("...", this.startX, runningY, "ADD_AFTER");
         this.addButton("🔓", this.startX, runningY - (featureHeight / 1.5), "LOCK");
-        
+
         if (this.tokenJson["ID"] == "1") { // first token
           this.addButton("...", this.startX, runningY, "ADD_BEFORE");
           this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_BEFORE"].getBBox().h / 4, "ANCHOR_LEFT");
@@ -608,20 +608,20 @@ class TokenSVG {
         const afterButtonX = featureX + featureWidth;
         this.snapElements["ADD_AFTER"].attr({ x: afterButtonX });
         this.snapElements["REMOVE"].attr({ x: afterButtonX });
-        
+
         const lock = this.snapElements["LOCK"];
         lock.attr({ x: this.centerX - (lock.getBBox().w / 2) });
 
         if (this.snapElements["ANCHOR_LEFT"] && this.snapElements["ADD_BEFORE"]) { // first token
           const anchor_left = this.snapElements["ANCHOR_LEFT"];
           const add_before = this.snapElements["ADD_BEFORE"];
-          add_before.attr({ x: this.centerX - (featureWidth / 2 + add_before.getBBox().w)});
-          anchor_left.attr({ x: this.centerX - (featureWidth / 2 + anchor_left.getBBox().w + add_before.getBBox().w)});
+          add_before.attr({ x: this.centerX - (featureWidth / 2 + add_before.getBBox().w) });
+          anchor_left.attr({ x: this.centerX - (featureWidth / 2 + anchor_left.getBBox().w + add_before.getBBox().w) });
         }
 
         if (this.snapElements["ANCHOR_RIGHT"]) { // last token
           const anchor_right = this.snapElements["ANCHOR_RIGHT"];
-          anchor_right.attr({ x: this.centerX + (featureWidth / 2) + anchor_right.getBBox().w});
+          anchor_right.attr({ x: this.centerX + (featureWidth / 2) + anchor_right.getBBox().w });
         }
 
       }
