@@ -575,6 +575,9 @@ class TokenSVG {
         if (lastToken) {
           this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_AFTER"].getBBox().h / 4, "ANCHOR_RIGHT");
         }
+        else {
+          this.addButton(">", this.startX, runningY, "CHAIN");
+        }
       }
 
       // increment position except if feature is a FEATS or MISC which is not present for the token
@@ -622,6 +625,11 @@ class TokenSVG {
         if (this.snapElements["ANCHOR_RIGHT"]) { // last token
           const anchor_right = this.snapElements["ANCHOR_RIGHT"];
           anchor_right.attr({ x: this.centerX + (featureWidth / 2) + anchor_right.getBBox().w });
+        }
+
+        if (this.snapElements["CHAIN"]) { // all but last token
+          const chain = this.snapElements["CHAIN"];
+          chain.attr({ x: afterButtonX + 2 * this.snapElements["ADD_AFTER"].getBBox().w });
         }
 
       }

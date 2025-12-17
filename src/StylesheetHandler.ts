@@ -32,7 +32,7 @@ const sharedStyleSheet = `
     z-index: 99;
   }
   
-  .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+  .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE, .CHAIN {
     font-size: 11px;
   }
 
