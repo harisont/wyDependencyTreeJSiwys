@@ -216,8 +216,11 @@ export class SentenceSVG extends EventDispatcher {
       const tokenJson = getNodeFromTreeJson(this.treeJson, tokenJsonIndex);
       if (tokenJson) {
         const tokenSVG = new TokenSVG(tokenJson, this);
+        const anchored = "anchored" in tokenJson.MISC;
+        const ordered = "ordered" in tokenJson.MISC;
+        const subsequent = "subsequent" in tokenJson.MISC;
         this.tokenSVGs.push(tokenSVG);
-        prevX = tokenSVG.createSnap(this.snapSentence, this.options.shownFeatures, runningX, offsetY, lastTokenJsonIndex == tokenJsonIndex, prevX);
+        prevX = tokenSVG.createSnap(this.snapSentence, this.options.shownFeatures, runningX, offsetY, lastTokenJsonIndex == tokenJsonIndex, prevX, anchored, ordered, subsequent);
         tokenSVG.ylevel = this.levelsArray[tokenSvgIndex];
         runningX += tokenSVG.width;
         tokenSvgIndex += 1;
@@ -530,7 +533,7 @@ class TokenSVG {
     this.snapElements = {};
   }
 
-  createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean, prevX: number): number {
+  createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean, prevX: number, anchored: boolean, ordered: boolean, subsequent: boolean): number {
     this.snapSentence = snapSentence;
     this.shownFeatures = shownFeatures;
     this.startX = startX;
@@ -567,18 +570,18 @@ class TokenSVG {
 
         this.addButton("×", this.startX, runningY - (featureHeight / 3), "REMOVE");
         this.addButton("...", this.startX, runningY, "ADD_AFTER");
-        this.addButton("🔒", this.startX, runningY - (featureHeight / 1.5), "LOCK", false);
+        this.addButton("🔒", this.startX, runningY - (featureHeight / 1.5), "LOCK", ordered);
 
         const midButtonY = runningY - snapFeature.getBBox().h / 10; // yeah 10 is a magic number...
 
         if (this.tokenJson["ID"] == "1") { // first token
           this.addButton("...", this.startX, runningY, "ADD_BEFORE");
-          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_LEFT", false);
+          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_LEFT", anchored);
         } else {
-          this.addButton("🔗", this.startX, midButtonY, "CHAIN", false);
+          this.addButton("🔗", this.startX, midButtonY, "CHAIN", subsequent);
         }
         if (lastToken) {
-          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_RIGHT", false);
+          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_RIGHT", anchored);
         }
       }
 

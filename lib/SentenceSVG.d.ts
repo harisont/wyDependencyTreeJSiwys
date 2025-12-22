@@ -97,7 +97,7 @@ declare class TokenSVG {
     draggedArrowhead: Snap.Element;
     dragRootCircle?: Snap.Element;
     constructor(tokenJson: tokenJson_T, sentenceSVG: SentenceSVG);
-    createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean, prevX: number): number;
+    createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean, prevX: number, anchored: boolean, ordered: boolean, subsequent: boolean): number;
     addButton(icon: string, x: number, y: number, className: string, active?: boolean): void;
     centerFeatures(prevX: number): number;
     drawRelation(snapSentence: Snap.Paper, headCoordX: number, levelHeight: number): void;
