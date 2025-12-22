@@ -211,12 +211,13 @@ export class SentenceSVG extends EventDispatcher {
 
     let tokenSvgIndex = 0;
     const lastTokenJsonIndex = this.orderOfTokens.slice(-1)[0];
+    let prevX = 0;
     for (const tokenJsonIndex of this.orderOfTokens) {
       const tokenJson = getNodeFromTreeJson(this.treeJson, tokenJsonIndex);
       if (tokenJson) {
         const tokenSVG = new TokenSVG(tokenJson, this);
         this.tokenSVGs.push(tokenSVG);
-        tokenSVG.createSnap(this.snapSentence, this.options.shownFeatures, runningX, offsetY, lastTokenJsonIndex == tokenJsonIndex);
+        prevX = tokenSVG.createSnap(this.snapSentence, this.options.shownFeatures, runningX, offsetY, lastTokenJsonIndex == tokenJsonIndex, prevX);
         tokenSVG.ylevel = this.levelsArray[tokenSvgIndex];
         runningX += tokenSVG.width;
         tokenSvgIndex += 1;
@@ -529,7 +530,7 @@ class TokenSVG {
     this.snapElements = {};
   }
 
-  createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean): void {
+  createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean, prevX: number): number {
     this.snapSentence = snapSentence;
     this.shownFeatures = shownFeatures;
     this.startX = startX;
@@ -568,15 +569,16 @@ class TokenSVG {
         this.addButton("...", this.startX, runningY, "ADD_AFTER");
         this.addButton("🔒", this.startX, runningY - (featureHeight / 1.5), "LOCK", false);
 
+        const midButtonY = runningY - snapFeature.getBBox().h / 10; // yeah 10 is a magic number...
+
         if (this.tokenJson["ID"] == "1") { // first token
           this.addButton("...", this.startX, runningY, "ADD_BEFORE");
-          this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_BEFORE"].getBBox().h / 4, "ANCHOR_LEFT", false);
+          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_LEFT", false);
+        } else {
+          this.addButton("🔗", this.startX, midButtonY, "CHAIN", false);
         }
         if (lastToken) {
-          this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_AFTER"].getBBox().h / 4, "ANCHOR_RIGHT", false);
-        }
-        else {
-          this.addButton("🔗", this.startX, runningY, "CHAIN", false);
+          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_RIGHT", false);
         }
       }
 
@@ -588,7 +590,8 @@ class TokenSVG {
     this.width = maxFeatureWidth + this.sentenceSVG.options.tokenSpacing;
     this.centerX = this.startX + this.width / 2;
 
-    this.centerFeatures();
+    prevX = this.centerFeatures(prevX);
+    return prevX;
   }
 
   addButton(icon: string, x: number, y: number, className: string, active: boolean=true): void {
@@ -602,15 +605,14 @@ class TokenSVG {
   }
 
 
-  centerFeatures(): void {
-    // center the feature in the column node
-    // |hello    |my    |friend    | => |  hello  |  my  |  friend  |
+  centerFeatures(prevX: number): number {
+    // center the feature horizontally
     for (const feature of this.shownFeatures) {
       const snapFeature = this.snapElements[feature];
       const featureWidth = snapFeature.getBBox().w;
       const featureX = this.centerX - featureWidth / 2;
       snapFeature.attr({ x: featureX });
-      if (feature == "FORM") { // then also center WYTIWYS buttons
+      if (feature == "FORM") { // then also center WYTIWYS buttons 
         const afterButtonX = featureX + featureWidth;
         this.snapElements["ADD_AFTER"].attr({ x: afterButtonX });
         this.snapElements["REMOVE"].attr({ x: afterButtonX });
@@ -630,13 +632,14 @@ class TokenSVG {
           anchor_right.attr({ x: this.centerX + (featureWidth / 2) + anchor_right.getBBox().w });
         }
 
-        if (this.snapElements["CHAIN"]) { // all but last token
+        if (this.snapElements["CHAIN"]) { // all but first token
           const chain = this.snapElements["CHAIN"];
-          chain.attr({ x: afterButtonX + 2 * this.snapElements["ADD_AFTER"].getBBox().w });
+          chain.attr({ x: featureX - (((featureX - prevX) / 2) + (chain.getBBox().w / 2)) });
         }
-
+        prevX = afterButtonX + this.snapElements["ADD_AFTER"].getBBox().w;
       }
     }
+    return prevX;
   }
 
   drawRelation(snapSentence: Snap.Paper, headCoordX: number, levelHeight: number): void {
