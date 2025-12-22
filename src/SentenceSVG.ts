@@ -566,17 +566,17 @@ class TokenSVG {
 
         this.addButton("×", this.startX, runningY - (featureHeight / 3), "REMOVE");
         this.addButton("...", this.startX, runningY, "ADD_AFTER");
-        this.addButton("🔓", this.startX, runningY - (featureHeight / 1.5), "LOCK");
+        this.addButton("🔒", this.startX, runningY - (featureHeight / 1.5), "LOCK", false);
 
         if (this.tokenJson["ID"] == "1") { // first token
           this.addButton("...", this.startX, runningY, "ADD_BEFORE");
-          this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_BEFORE"].getBBox().h / 4, "ANCHOR_LEFT");
+          this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_BEFORE"].getBBox().h / 4, "ANCHOR_LEFT", false);
         }
         if (lastToken) {
-          this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_AFTER"].getBBox().h / 4, "ANCHOR_RIGHT");
+          this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_AFTER"].getBBox().h / 4, "ANCHOR_RIGHT", false);
         }
         else {
-          this.addButton("🔗", this.startX, runningY, "CHAIN");
+          this.addButton("🔗", this.startX, runningY, "CHAIN", false);
         }
       }
 
@@ -591,11 +591,14 @@ class TokenSVG {
     this.centerFeatures();
   }
 
-  addButton(icon: string, x: number, y: number, className: string): void {
+  addButton(icon: string, x: number, y: number, className: string, active: boolean=true): void {
     const button = this.snapSentence.text(x, y, icon);
     button.addClass(className);
     button.addClass("WYTIWYS_BUTTON");
     this.snapElements[className] = button;
+    if (!active) {
+      button.addClass("inactive");
+    }
   }
 
 

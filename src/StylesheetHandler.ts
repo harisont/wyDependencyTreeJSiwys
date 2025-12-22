@@ -44,6 +44,10 @@ const sharedStyleSheet = `
     font-weight: 999;
   } 
 
+  .inactive {
+    opacity: 0.3;
+  }
+
   .glossy {
     font-style: italic;
   }
