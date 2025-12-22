@@ -2,9 +2,7 @@ const sharedStyleSheet = `
   .interactive > .FORM,
   .interactive > .LEMMA,
   .interactive > .UPOS,
-  .interactive > .ADD_AFTER,
-  .interactive > .ADD_BEFORE,
-  .interactive > .REMOVE,
+  .interactive > .WYTIWYS_BUTTON,
   .interactive > .DEPREL {
     cursor: pointer;
   }
@@ -34,13 +32,21 @@ const sharedStyleSheet = `
     z-index: 99;
   }
   
-  .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+  .FEATS, .MISC, .ADD_AFTER, .ADD_BEFORE, .REMOVE, .CHAIN {
     font-size: 11px;
   }
+
+  .WYTIWYS_BUTTON {
+    font-size: 8px;
+  }
     
-  .ADD_AFTER, .ADD_BEFORE, .REMOVE {
+  .WYTIWYS_BUTTON {
     font-weight: 999;
   } 
+
+  .inactive {
+    opacity: 0.3;
+  }
 
   .glossy {
     font-style: italic;
@@ -73,7 +79,7 @@ export const lightStylesheet =
       fill: black;
     } 
     
-    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+    .WYTIWYS_BUTTON { 
       fill: #F0581A;
     }
 
@@ -113,7 +119,7 @@ export const darkStylesheet =
       fill: white;
     } 
     
-    .ADD_AFTER, .ADD_BEFORE, .REMOVE{
+    .WYTIWYS_BUTTON {
       fill: #F0581A;
     }
 

@@ -210,12 +210,17 @@ export class SentenceSVG extends EventDispatcher {
     const offsetY = SVG_CONFIG.startTextY + maxLevelY * this.options.arcHeight;
 
     let tokenSvgIndex = 0;
+    const lastTokenJsonIndex = this.orderOfTokens.slice(-1)[0];
+    let prevX = 0;
     for (const tokenJsonIndex of this.orderOfTokens) {
       const tokenJson = getNodeFromTreeJson(this.treeJson, tokenJsonIndex);
       if (tokenJson) {
         const tokenSVG = new TokenSVG(tokenJson, this);
+        const anchored = "anchored" in tokenJson.MISC;
+        const ordered = "ordered" in tokenJson.MISC;
+        const subsequent = "subsequent" in tokenJson.MISC;
         this.tokenSVGs.push(tokenSVG);
-        tokenSVG.createSnap(this.snapSentence, this.options.shownFeatures, runningX, offsetY);
+        prevX = tokenSVG.createSnap(this.snapSentence, this.options.shownFeatures, runningX, offsetY, lastTokenJsonIndex == tokenJsonIndex, prevX, anchored, ordered, subsequent);
         tokenSVG.ylevel = this.levelsArray[tokenSvgIndex];
         runningX += tokenSVG.width;
         tokenSvgIndex += 1;
@@ -528,12 +533,12 @@ class TokenSVG {
     this.snapElements = {};
   }
 
-  createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number): void {
+  createSnap(snapSentence: Snap.Paper, shownFeatures: string[], startX: number, startY: number, lastToken: boolean, prevX: number, anchored: boolean, ordered: boolean, subsequent: boolean): number {
     this.snapSentence = snapSentence;
     this.shownFeatures = shownFeatures;
     this.startX = startX;
     this.startY = startY || 10;
-    let runningY = this.startY;
+    let runningY = this.startY + 6;
 
     let maxFeatureWidth = 0;
     for (const feature of shownFeatures) {
@@ -560,21 +565,23 @@ class TokenSVG {
       const featureHeight = snapFeature.getBBox().h;
       maxFeatureWidth = Math.max(maxFeatureWidth, featureWidth); // keep biggest node width
 
-      // create add/remove buttons
+      // create WYTIWYS buttons
       if (feature == "FORM") {
 
-        const snapRemoveButton = snapSentence.text(this.startX, runningY - (featureHeight / 3), "×");
-        snapRemoveButton.addClass("REMOVE");
-        this.snapElements["REMOVE"] = snapRemoveButton;
+        this.addButton("×", this.startX, runningY - (featureHeight / 3), "REMOVE");
+        this.addButton("...", this.startX, runningY, "ADD_AFTER");
+        this.addButton("🔒", this.startX, runningY - (featureHeight / 1.5), "LOCK", ordered);
 
-        const snapAddAfterButton = snapSentence.text(this.startX, runningY, "...");
-        snapAddAfterButton.addClass("ADD_AFTER");
-        this.snapElements["ADD_AFTER"] = snapAddAfterButton;
+        const midButtonY = runningY - snapFeature.getBBox().h / 10; // yeah 10 is a magic number...
 
-        if (this.tokenJson["ID"] == "1") {
-          const snapAddBeforeButton = snapSentence.text(this.startX, runningY, "...");
-          snapAddBeforeButton.addClass("ADD_BEFORE");
-          this.snapElements["ADD_BEFORE"] = snapAddBeforeButton;
+        if (this.tokenJson["ID"] == "1") { // first token
+          this.addButton("...", this.startX, runningY, "ADD_BEFORE");
+          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_LEFT", anchored);
+        } else {
+          this.addButton("🔗", this.startX, midButtonY, "CHAIN", subsequent);
+        }
+        if (lastToken) {
+          this.addButton("⚓", this.startX, midButtonY, "ANCHOR_RIGHT", anchored);
         }
       }
 
@@ -586,23 +593,56 @@ class TokenSVG {
     this.width = maxFeatureWidth + this.sentenceSVG.options.tokenSpacing;
     this.centerX = this.startX + this.width / 2;
 
-    this.centerFeatures();
+    prevX = this.centerFeatures(prevX);
+    return prevX;
   }
 
-  centerFeatures(): void {
-    // center the feature in the column node
-    // |hello    |my    |friend    | => |  hello  |  my  |  friend  |
+  addButton(icon: string, x: number, y: number, className: string, active: boolean=true): void {
+    const button = this.snapSentence.text(x, y, icon);
+    button.addClass(className);
+    button.addClass("WYTIWYS_BUTTON");
+    this.snapElements[className] = button;
+    if (!active) {
+      button.addClass("inactive");
+    }
+  }
+
+
+  centerFeatures(prevX: number): number {
+    // center the feature horizontally
     for (const feature of this.shownFeatures) {
       const snapFeature = this.snapElements[feature];
       const featureWidth = snapFeature.getBBox().w;
       const featureX = this.centerX - featureWidth / 2;
       snapFeature.attr({ x: featureX });
-      if (feature == "FORM") { // then also center token opts buttons
+      if (feature == "FORM") { // then also center WYTIWYS buttons 
         const afterButtonX = featureX + featureWidth;
         this.snapElements["ADD_AFTER"].attr({ x: afterButtonX });
         this.snapElements["REMOVE"].attr({ x: afterButtonX });
+
+        const lock = this.snapElements["LOCK"];
+        lock.attr({ x: this.centerX - (lock.getBBox().w / 2) });
+
+        if (this.snapElements["ANCHOR_LEFT"] && this.snapElements["ADD_BEFORE"]) { // first token
+          const anchor_left = this.snapElements["ANCHOR_LEFT"];
+          const add_before = this.snapElements["ADD_BEFORE"];
+          add_before.attr({ x: this.centerX - (featureWidth / 2 + add_before.getBBox().w) });
+          anchor_left.attr({ x: this.centerX - (featureWidth / 2 + anchor_left.getBBox().w + add_before.getBBox().w) });
+        }
+
+        if (this.snapElements["ANCHOR_RIGHT"]) { // last token
+          const anchor_right = this.snapElements["ANCHOR_RIGHT"];
+          anchor_right.attr({ x: this.centerX + (featureWidth / 2) + anchor_right.getBBox().w });
+        }
+
+        if (this.snapElements["CHAIN"]) { // all but first token
+          const chain = this.snapElements["CHAIN"];
+          chain.attr({ x: featureX - (((featureX - prevX) / 2) + (chain.getBBox().w / 2)) });
+        }
+        prevX = afterButtonX + this.snapElements["ADD_AFTER"].getBBox().w;
       }
     }
+    return prevX;
   }
 
   drawRelation(snapSentence: Snap.Paper, headCoordX: number, levelHeight: number): void {

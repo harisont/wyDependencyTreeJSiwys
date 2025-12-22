@@ -158,6 +158,21 @@ export class ReactiveSentence implements IOriginator, ISubject {
     this.notify();
   }
 
+  public toggleBoolFeat(tokenID: string, feat: string): boolean {
+    let token = this.state.treeJson.nodesJson[tokenID];
+    let active = true;
+    if (feat in token.MISC) {
+      delete token.MISC[feat];
+      active = false;
+    } else {
+      token.MISC[feat] = "Yes";
+    }
+    this.updateToken(token);
+
+    // so that the application can give visual feedback without performing a similar check
+    return active; 
+  }
+
   public removeToken(tokenID: string): void {
     const newTree = replaceArrayOfTokens(this.state.treeJson, [parseInt(tokenID, 10)], []);
     this.updateTree(newTree);
