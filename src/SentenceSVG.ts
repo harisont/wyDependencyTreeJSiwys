@@ -576,7 +576,7 @@ class TokenSVG {
           this.addButton("⚓", this.startX, runningY - this.snapElements["ADD_AFTER"].getBBox().h / 4, "ANCHOR_RIGHT");
         }
         else {
-          this.addButton(">", this.startX, runningY, "CHAIN");
+          this.addButton("🔗", this.startX, runningY, "CHAIN");
         }
       }
 
