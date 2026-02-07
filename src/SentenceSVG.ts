@@ -93,13 +93,6 @@ export class SentenceSVG extends EventDispatcher {
 
     reactiveSentence.attach(this);
 
-    if (this.options.shownFeatures.length === 0) {
-      this.options.shownFeatures = reactiveSentence.getAllFeaturesSet();
-    }
-
-    // // put FORM at the beginning of the shownFeatures array
-    this.options.shownFeatures = this.options.shownFeatures.filter((item) => item !== 'FORM');
-    this.options.shownFeatures.unshift('FORM');
     this.drawTree();
   }
 
@@ -541,10 +534,8 @@ class TokenSVG {
     let runningY = this.startY + 6;
 
     let maxFeatureWidth = 0;
-    for (const feature of shownFeatures) {
-      // create new snap node for the feature text
+    for (const feature in this.tokenJson) {
       let featureText: string;
-
       // check if there is a feature and if it's a nested feature (misc and feats)
       if (this.tokenJson[feature]) {
         if (feature.split('.').length >= 2) {
@@ -557,6 +548,16 @@ class TokenSVG {
         featureText = '';
       }
       const snapFeature = snapSentence.text(this.startX, runningY, featureText);
+
+      if (!shownFeatures.includes(feature)) {
+        snapFeature.attr({ visibility: "hidden" });
+      }
+
+      // ID is never visualized, the other ones are visualized elsewhere
+      if (["ID", "HEAD", "DEPREL"].includes(feature)) {
+        snapFeature.attr({ display: "none" });
+      }
+
       snapFeature.addClass(feature.split('.')[0]);
 
       this.snapElements[feature] = snapFeature;
@@ -597,7 +598,7 @@ class TokenSVG {
     return prevX;
   }
 
-  addButton(icon: string, x: number, y: number, className: string, active: boolean=true): void {
+  addButton(icon: string, x: number, y: number, className: string, active: boolean = true): void {
     const button = this.snapSentence.text(x, y, icon);
     button.addClass(className);
     button.addClass("WYTIWYS_BUTTON");
@@ -670,6 +671,11 @@ class TokenSVG {
     const arrowheadPath = getArrowheadPath(X_depBoxCenter, Y_depBoxUpperBound);
     const snapArrowhead = snapSentence.path(arrowheadPath).addClass('arrowhead');
 
+    if (!this.shownFeatures.includes("HEAD")) {
+      snapArc.attr({ visibility: "hidden" });
+      snapArrowhead.attr({ visibility: "hidden" });
+    }
+
     let deprelX = snapArc.getBBox().x + snapArc.getBBox().w / 2;
     let deprelY = snapArc.getBBox().y - 5;
 
@@ -680,6 +686,9 @@ class TokenSVG {
     }
 
     const snapDeprel = snapSentence.text(deprelX, deprelY, this.tokenJson.DEPREL).addClass('DEPREL');
+    if (!this.shownFeatures.includes("DEPREL")) {
+      snapDeprel.attr({ visibility: "hidden" });
+    }
 
     snapDeprel.attr({ x: deprelX - snapDeprel.getBBox().w / 2 });
     this.snapElements['DEPREL'] = snapDeprel;
