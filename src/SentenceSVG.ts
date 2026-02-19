@@ -611,7 +611,7 @@ class TokenSVG {
 
   centerFeatures(prevX: number): number {
     // center the feature horizontally
-    for (const feature of this.shownFeatures) {
+    for (const feature in this.tokenJson) {
       const snapFeature = this.snapElements[feature];
       const featureWidth = snapFeature.getBBox().w;
       const featureX = this.centerX - featureWidth / 2;
