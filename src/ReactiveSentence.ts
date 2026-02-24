@@ -170,7 +170,7 @@ export class ReactiveSentence implements IOriginator, ISubject {
     this.updateToken(token);
 
     // so that the application can give visual feedback without performing a similar check
-    return active; 
+    return active;
   }
 
   public removeToken(tokenID: string): void {
@@ -232,11 +232,11 @@ export class ReactiveSentence implements IOriginator, ISubject {
     this.notify();
   }
 
-  public exportConll() {
+  public exportConll(shownFeatures: string[]) {
     return sentenceJsonToConll({
       treeJson: this.state.treeJson,
       metaJson: this.state.metaJson,
-    });
+    }, shownFeatures);
   }
 
   public getSentenceText(): string {
