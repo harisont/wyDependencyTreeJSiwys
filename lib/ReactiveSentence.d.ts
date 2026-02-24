@@ -66,7 +66,7 @@ export declare class ReactiveSentence implements IOriginator, ISubject {
     addEmptyTokenBefore(tokenID: string): void;
     addEmptyTokenAfter(tokenID: string): void;
     addEmptyToken(): void;
-    exportConll(): string;
+    exportConll(shownFeatures: string[]): string;
     getSentenceText(): string;
     getUndescoredText(): string;
     getAllFeaturesSet(): string[];

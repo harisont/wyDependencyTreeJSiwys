@@ -72,7 +72,7 @@ export declare class SentenceSVG extends EventDispatcher {
             [key: string]: number;
         };
     };
-    exportConll(): string;
+    exportConll(shownFeatures: string[]): string;
     refresh(): void;
 }
 declare class TokenSVG {
