@@ -465,11 +465,11 @@ export class SentenceSVG extends EventDispatcher {
     return { corrects, totals };
   }
 
-  exportConll(shownFeatures: string[]) {
+  exportConll(features: string[]) {
     return sentenceJsonToConll({
       treeJson: this.treeJson,
       metaJson: this.metaJson
-    }, shownFeatures);
+    }, features);
   }
 
   refresh() {

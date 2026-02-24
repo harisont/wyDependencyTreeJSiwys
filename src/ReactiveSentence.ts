@@ -232,11 +232,11 @@ export class ReactiveSentence implements IOriginator, ISubject {
     this.notify();
   }
 
-  public exportConll(shownFeatures: string[]) {
+  public exportConll(features: string[]) {
     return sentenceJsonToConll({
       treeJson: this.state.treeJson,
       metaJson: this.state.metaJson,
-    }, shownFeatures);
+    }, features);
   }
 
   public getSentenceText(): string {
