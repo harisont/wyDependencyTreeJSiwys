@@ -135,15 +135,23 @@ export class ReactiveSentence implements IOriginator, ISubject {
 
   public updateToken(tokenJson: tokenJson_T): void {
     tokenJson.ID = tokenJson.ID.toString();
+    let target;
     if (tokenJson.ID.indexOf('-') > -1) {
       // is group token
-      Object.assign(this.state.treeJson.groupsJson[tokenJson.ID], tokenJson);
+      target = this.state.treeJson.groupsJson[tokenJson.ID];
     } else if (tokenJson.ID.indexOf('.') > -1) {
       // is enhanced token
-      Object.assign(this.state.treeJson.enhancedNodesJson[tokenJson.ID], tokenJson);
+      target = this.state.treeJson.enhancedNodesJson[tokenJson.ID];
     } else {
       // is normal token
-      Object.assign(this.state.treeJson.nodesJson[tokenJson.ID], tokenJson);
+      target = this.state.treeJson.nodesJson[tokenJson.ID];
+    }
+    const field : string = tokenJson["FIELD"].toString() ;
+    const splitField = field.split(".");
+    if (["FEATS", "MISC"].includes(splitField[0])) {
+      (target[splitField[0]] as featuresJson_T)[splitField[1]] = tokenJson[field] as string;
+    } else {
+      Object.assign(target, tokenJson);
     }
     this.notify();
   }
