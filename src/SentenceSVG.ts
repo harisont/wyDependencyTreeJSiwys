@@ -536,11 +536,12 @@ class TokenSVG {
     let maxFeatureWidth = 0;
     for (const feature in this.tokenJson) {
       let featureText: string;
+      const splitFeat = feature.split('.');
       // check if there is a feature and if it's a nested feature (misc and feats)
       if (this.tokenJson[feature]) {
-        if (feature.split('.').length >= 2) {
+        if (splitFeat.length >= 2) {
           // if len >=2, it means it's a misc or feats
-          featureText = `${feature.split('.')[1]}=${this.tokenJson[feature]}`;
+          featureText = `${splitFeat[1]}=${this.tokenJson[feature]}`;
         } else {
           featureText = this.tokenJson[feature] as string;
         }
@@ -549,12 +550,12 @@ class TokenSVG {
       }
       const snapFeature = snapSentence.text(this.startX, runningY, featureText);
 
-      if (!shownFeatures.includes(feature)) {
+      if (!shownFeatures.includes(splitFeat[0])) {
         snapFeature.attr({ visibility: "hidden" });
       }
 
-      // ID is never visualized, the other ones are visualized elsewhere
-      if (["ID", "HEAD", "DEPREL"].includes(feature)) {
+      // ID is never visualized, the other ones are visualized elsewhere/otherwise
+      if (["ID", "HEAD", "DEPREL", "FEATS", "MISC"].includes(feature)) {
         snapFeature.attr({ display: "none" });
       }
 
