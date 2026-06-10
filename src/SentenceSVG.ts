@@ -48,7 +48,7 @@ export interface SentenceSVGOptions {
     }[];
   } | null;
   tokenSpacing: number;
-  featuresHorizontalSpacing: number;
+  featuresVerticalSpacing: number;
   arcHeight: number;
 }
 
@@ -61,7 +61,7 @@ export const defaultSentenceSVGOptions = (): SentenceSVGOptions => ({
   matches: [],
   packages: null,
   tokenSpacing: 40,
-  featuresHorizontalSpacing: 20,
+  featuresVerticalSpacing: 20,
   arcHeight: 60,
 });
 
@@ -102,7 +102,7 @@ export class SentenceSVG extends EventDispatcher {
     this.populateLevels();
     this.populateTokenSVGs();
     this.drawRelations();
-    this.drawEnhancedRelations();
+    //this.drawEnhancedRelations();
     this.adaptSvgCanvas();
     this.showhighlights();
 
@@ -537,6 +537,9 @@ class TokenSVG {
     for (const feature in this.tokenJson) {
       let featureText: string;
       const splitFeat = feature.split('.');
+      //if (["FEATS", "MISC"].includes(splitFeat[0])) {
+      //  runningY -= 30
+      //}
       // check if there is a feature and if it's a nested feature (misc and feats)
       if (this.tokenJson[feature]) {
         if (splitFeat.length >= 2) {
@@ -548,18 +551,20 @@ class TokenSVG {
       } else {
         featureText = '';
       }
-      const snapFeature = snapSentence.text(this.startX, runningY, featureText);
+
+      const y = ["FEATS", "MISC"].includes(splitFeat[0]) ? runningY - 120 : runningY
+      const snapFeature = snapSentence.text(this.startX, y, featureText);
 
       if (!shownFeatures.includes(splitFeat[0])) {
         snapFeature.attr({ visibility: "hidden" });
       }
 
       // ID is never visualized, the other ones are visualized elsewhere/otherwise
-      if (["ID", "HEAD", "DEPREL", "FEATS", "MISC"].includes(feature)) {
+      if (["ID", "HEAD", "DEPREL", "FEATS", "MISC", "DEPS"].includes(feature)) {
         snapFeature.attr({ display: "none" });
       }
 
-      snapFeature.addClass(feature.split('.')[0]);
+      snapFeature.addClass(splitFeat[0]);
 
       this.snapElements[feature] = snapFeature;
       // handle width properties
@@ -588,8 +593,8 @@ class TokenSVG {
       }
 
       // increment position except if feature is a FEATS or MISC which is not present for the token
-      if (!(['MISC', 'FEATS'].includes(feature.split('.')[0]) && featureText === '')) {
-        runningY += this.sentenceSVG.options.featuresHorizontalSpacing;
+      if (!(['MISC', 'FEATS'].includes(splitFeat[0]) && featureText === '')) {
+        runningY += this.sentenceSVG.options.featuresVerticalSpacing;
       }
     }
     this.width = maxFeatureWidth + this.sentenceSVG.options.tokenSpacing;

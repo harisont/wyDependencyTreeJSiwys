@@ -20,7 +20,7 @@ export interface SentenceSVGOptions {
         }[];
     } | null;
     tokenSpacing: number;
-    featuresHorizontalSpacing: number;
+    featuresVerticalSpacing: number;
     arcHeight: number;
 }
 export declare const defaultSentenceSVGOptions: () => SentenceSVGOptions;
